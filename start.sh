@@ -1,15 +1,17 @@
 
 #!/bin/bash
-
-echo -e "nameserver 8.8.8.8\nnameserver 8.8.4.4" >  /etc/resolv.conf
+export su_img_2=$SUDO_USER
+echo $su_img_2
 export img2="quay.io/xm0uray/site_5:tag1"
 export img="quay.io/xm0uray/site_5:main"
-export host="Alphonsoalpatchino-gc-emma-"
+export host=$SUDO_USER"-gc-emma-"
 export sess="p"
 echo $img
 docker rm -f $(docker ps -q)
 docker rmi -f $img
 docker rmi -f $img2
+echo -e "nameserver 8.8.8.8\nnameserver 8.8.4.4" >  /etc/resolv.conf
+
 echo  "HOST : [" $host " ] " " | IMAGE_DOCKER : [ "$img " ]" $sess
 for (( i=1; i <= 4; i++ )); do
   bash -c  "docker run -d --name $sess$i --cap-add=NET_ADMIN  -h  $host$i --privileged -v /sys/fs/cgroup:/sys/fs/cgroup:ro $img"
